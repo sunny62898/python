@@ -26,17 +26,20 @@ import openpyxl
 def one(array) :
     while(1) : 
         com = input("請問要合併列還是行(1 => 列 , 2 => 行) : ")
-        if com == 1 or com == 2 :
+        if com == '1' or com == '2' :
             break
         else : 
             print("請輸入1或2")
     
     row = array.shape[0]
     col = array.shape[1]
+    #row = len(array)
+    #col = len(array[0])
+    
     print("請問要整併哪兩個欄位")
     
     #input row
-    if com == 1 :
+    if com == '1' :
         
         while(1) : 
             Comb1 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
@@ -51,9 +54,10 @@ def one(array) :
                 break;
             else : 
                 print("請介於0和" + str(row) + "之間")
+    
                 
     #input col
-    elif com == 2 :
+    elif com == '2' :
         
         while(1) : 
             Comb1 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
@@ -69,21 +73,63 @@ def one(array) :
                 print("請介於0和" + str(col) + "之間")
             
     
-    print(array)
-    numpy.hstack([array[0],array[1]])
-    print(array)
-    print(row)
-    print(col)
+    
     return combine(array , Comb1 , Comb2 , com)
 
 def combine(array , first , second , com) : 
     
+    #計算行數列數
+    rows , cols = array.shape
+    
+    #rows = len(array)
+    #cols = len(array[0])
+    print(rows)
+    print(cols)
+    
+    print(type(rows))
+    print(type(first))
+    
+    print(array)
     #row
-    if com == 1 :
-        newArray = numpy.concatenate([array[first],array[second]] , axis = 1)
-        print(newArray)
+    #指定列 => 跑行
+    if com == '1' :
+        newArray = numpy.empty([rows - 1 , cols], dtype = ('object'))
+        for i in range(cols) : 
+            if first == rows-1 :
+                newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
+            else :
+                newArray[first , i] =  array[first , i]+ array[second , i]
+            
+        print(array)
+        
+        #刪掉被併掉的那行
+        k = 0
+        
+        #前面重複的
+        while(k < second) :
+            if k != first :
+                for i in range(cols) : 
+                    newArray[k , i] = array[k , i]
+        
+            k = k+1
+            
+        #後面往前位移的
+        p = second
+        while(p < rows - 2) :
+            for i in range(cols) : 
+                newArray[p , i] = array[p+1 , i]
+        
+            p = p+1
+        
+        print(str(newArray))
+        print(type(newArray[0,1]))
+        #print(newArray)
+        return newArray
+    
+    
     #col
-    elif com == 2 :
+    #指定行 => 跑列
+    elif com == '2' :
         newArray = numpy.concatenate([array[first],array[second]] , axis = 0)
         print(newArray)
     print("123")
@@ -97,7 +143,11 @@ wb_data = wb.active
 
 readList = [row for row in wb_data.values]
 
-array = numpy.array(readList , dtype = 'str')
+array = numpy.array(readList , dtype=('str'))
+
+print(type(readList[0][1]))
+
+print(array)
 
 #end of read file 
 
