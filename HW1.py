@@ -22,6 +22,9 @@ Created on Thu Jul  8 22:35:39 2021
 import numpy
 import openpyxl
 
+'''
+function part 
+'''
 #1 of function
 def one(array) :
     while(1) : 
@@ -36,11 +39,12 @@ def one(array) :
     #row = len(array)
     #col = len(array[0])
     
-    print("請問要整併哪兩個欄位")
+    
     
     #input row
     if com == '1' :
-        
+        print("請問要整併哪兩列")
+    
         while(1) : 
             Comb1 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
             if 0 <= Comb1 < row :
@@ -58,7 +62,7 @@ def one(array) :
                 
     #input col
     elif com == '2' :
-        
+        print("請問要整併哪兩行")
         while(1) : 
             Comb1 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
             if 0 <= Comb1 < col :
@@ -81,14 +85,6 @@ def combine(array , first , second , com) :
     #計算行數列數
     rows , cols = array.shape
     
-    #rows = len(array)
-    #cols = len(array[0])
-    print(rows)
-    print(cols)
-    
-    print(type(rows))
-    print(type(first))
-    
     print(array)
     #row
     #指定列 => 跑行
@@ -101,7 +97,7 @@ def combine(array , first , second , com) :
                 newArray[first , i] =  array[first , i]+ array[second , i]
             
         print(array)
-        
+        print(newArray)
         #刪掉被併掉的那行
         k = 0
         
@@ -115,28 +111,176 @@ def combine(array , first , second , com) :
             
         #後面往前位移的
         p = second
-        while(p < rows - 2) :
-            for i in range(cols) : 
-                newArray[p , i] = array[p+1 , i]
+        while(p < rows - 1) :
+            if first == rows - 1 :
+                if p != first-1 :
+                    for i in range(cols) : 
+                        newArray[p , i] = array[p+1 , i]
+            else :
+                if p != first :
+                    for i in range(cols) : 
+                        newArray[p , i] = array[p+1 , i]
+            
         
             p = p+1
         
-        print(str(newArray))
-        print(type(newArray[0,1]))
-        #print(newArray)
+        print(str(first) + "列和" + str(second) + "列已經被整併")
         return newArray
-    
+    #end of row
     
     #col
     #指定行 => 跑列
     elif com == '2' :
-        newArray = numpy.concatenate([array[first],array[second]] , axis = 0)
-        print(newArray)
-    print("123")
+        newArray = numpy.empty([rows , cols - 1], dtype = ('object'))
+        for i in range(rows) : 
+            if first == cols - 1 :
+                newArray[i , cols - 2] =  array[i , first]+ array[i , second]
+            else :
+                newArray[i , first] =  array[i , first]+ array[i , second]
+            
+        print(array)
+        
+        #刪掉被併掉的那列
+        k = 0
+        
+        #前面重複的
+        while(k < second) :
+            if k != first :
+                for i in range(rows) : 
+                    newArray[i , k] = array[i , k]
+            k = k+1
+        
+        
+        #後面往前位移的
+        p = second
+        print(cols - 2)
+        
+        while(p < cols - 1) :
+            if first == cols - 1 :
+                if p != first - 1 :
+                    for i in range(rows) : 
+                        newArray[i , p] = array[i , p+1]
+            else :
+                if p != first :
+                    for i in range(rows) : 
+                        newArray[i , p] = array[i , p+1]
+            
+            p = p+1
+            
+            
+        print(str(first) + "行和" + str(second) + "行已經被整併")
+        return newArray
+    #end of col
+    
+#1 of function end
+
+#2 of function
+def two(array) :
+    while(1) : 
+        com = input("請問要對調列還是行(1 => 列 , 2 => 行) : ")
+        if com == '1' or com == '2' :
+            break
+        else : 
+            print("請輸入1或2")
+    
+    row = array.shape[0]
+    col = array.shape[1]
+    
+    
+    
+    #input row
+    if com == '1' :
+        print("請問要對調哪兩列")
+        while(1) : 
+            Change1 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            if 0 <= Change1 < row :
+                break;
+            else : 
+                print("請介於0和" + str(row) + "之間")
+                
+        while(1) : 
+            Change2 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            if 0 <= Change2 < row :
+                break;
+            else : 
+                print("請介於0和" + str(row) + "之間")
+    
+                
+    #input col
+    elif com == '2' :
+        print("請問要對調哪兩行")
+        while(1) : 
+            Change1 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            if 0 <= Change1 < col :
+                break;
+            else : 
+                print("請介於0和" + str(col) + "之間")
+        while(1) : 
+            Change2 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            if 0 <= Change2 < col :
+                break;
+            else : 
+                print("請介於0和" + str(col) + "之間")
+        
+    return change(array , Change1 , Change2 , com)
+
+def change(array , change1 , change2 , com) :
+    #計算行數列數
+    rows , cols = array.shape
+    #row
+    if com == '1' :
+        array[[change1,change2] , :] = array[[change2,change1] , :]
+        print(array)
+        print(str(change1) + "列和" + str(change2) + "列已經對調")
+        
+        
+    #col
+    elif com == '2' :
+        array[: , [change1,change2]] = array[: , [change2,change1]]
+        print(array)
+        print(str(change1) + "行和" + str(change2) + "行已經對調")
+        
+    return array
+
+#2 of function end
+
+
+#3 of function
+def three(array) :
+    changeStr = input("請輸入要調換的字串 : ")
+    changeTo = input("請輸入要換成什麼字串 : ")
+    
+    #計算row col
+    row , col = array.shape
+    
+    newArray = numpy.empty([row , col], dtype = ('object'))
+    
+    for i in range(row) :
+        for j in range(col) :
+            if array[i,j] == changeStr :
+                print(changeTo)
+                newArray[i,j] = changeTo
+            else :
+                newArray[i,j] = array[i,j]
+          
+    str(newArray)
+    print(newArray)
+    print("已經將" + str(changeStr) + "換成" + str(changeTo))
+    
+    return newArray
+
+#3 of function end
+
+
+'''
+function part end
+'''
 
 
 
-
+'''
+main function
+'''
 #read file
 wb = openpyxl.load_workbook('test0.xlsx')  #讀入excel
 wb_data = wb.active
@@ -168,10 +312,16 @@ while(1) :
     if command == '1' :
         print("整併欄位")
         array = one(array)
+        print("output")
+        print(array)
     elif command == '2' :
         print("欄位調換")
+        array = two(array)
+        print("output")
+        print(array)
     elif command == '3' :
         print("欄位處理(調換有指定字的欄位)")
+        array = three(array)
     elif command == '4' :
         print("欄位刪除")
     elif command == '5' :
@@ -188,7 +338,9 @@ while(1) :
     
     command = input("command = ")
     
-
+'''
+end of main function
+'''
 
 
 
