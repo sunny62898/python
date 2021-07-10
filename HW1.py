@@ -91,39 +91,73 @@ def combine(array , first , second , com) :
     if com == '1' :
         newArray = numpy.empty([rows - 1 , cols], dtype = ('object'))
         for i in range(cols) : 
-            if first == rows-1 :
-                newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
-            else :
-                newArray[first , i] =  array[first , i]+ array[second , i]
+            if first <= second :
+                if first == rows-1 :
+                    newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
+                else :
+                    newArray[first , i] =  array[first , i]+ array[second , i]
+            else : 
+                if first == rows-1 :
+                    newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
+                else :
+                    newArray[first - 1 , i] =  array[first , i]+ array[second , i]
             
-        print(array)
-        print(newArray)
-        #刪掉被併掉的那行
-        k = 0
+        if first <= second :
+            k = 0
         
-        #前面重複的
-        while(k < second) :
-            if k != first :
+            #前面重複的
+            while(k < second) :
+                if k != first :
+                    for i in range(cols) : 
+                        newArray[k , i] = array[k , i]
+            
+                k = k+1
+                
+            #後面往前位移的
+            p = second
+            while(p < rows - 1) :
+                for i in range(cols) : 
+                    newArray[p , i] = array[p+1 , i]
+                
+                p = p+1
+        
+        else :
+            k = 0
+            while k < second :
                 for i in range(cols) : 
                     newArray[k , i] = array[k , i]
-        
-            k = k+1
-            
-        #後面往前位移的
-        p = second
-        while(p < rows - 1) :
-            if first == rows - 1 :
+                k = k+1
+                  
+            p = second
+            while(p < rows-1) :
+                '''
+                if first == rows - 1 :
+                    if p != first - 1 :
+                        if p == rows - 1 :
+                            for i in range(cols) :
+                                newArray[p , i] = array[p , i]
+                        else :
+                            for i in range(cols) :
+                                newArray[p , i] = array[p+1 , i]
+
+                else :
+                    if p != first-1 :
+                        if p == rows - 1 :
+                            for i in range(cols) :
+                                newArray[p , i] = array[p , i]
+                        else :
+                            for i in range(cols) :
+                                newArray[p , i] = array[p+1 , i]
+                '''
                 if p != first-1 :
-                    for i in range(cols) : 
-                        newArray[p , i] = array[p+1 , i]
-            else :
-                if p != first :
-                    for i in range(cols) : 
-                        newArray[p , i] = array[p+1 , i]
-            
-        
-            p = p+1
-        
+                    if p == rows - 1 :
+                        for i in range(cols) :
+                            newArray[p , i] = array[p , i]
+                    else :
+                        for i in range(cols) :
+                            newArray[p , i] = array[p+1 , i]
+                p = p + 1
+                
         print(str(first) + "列和" + str(second) + "列已經被整併")
         return newArray
     #end of row
@@ -133,40 +167,77 @@ def combine(array , first , second , com) :
     elif com == '2' :
         newArray = numpy.empty([rows , cols - 1], dtype = ('object'))
         for i in range(rows) : 
-            if first == cols - 1 :
-                newArray[i , cols - 2] =  array[i , first]+ array[i , second]
-            else :
-                newArray[i , first] =  array[i , first]+ array[i , second]
             
-        print(array)
+            if first <= second :
+                if first == cols - 1 :
+                    newArray[i , cols - 2] =  array[i , first]+ array[i , second]
+                else :
+                    newArray[i , first] =  array[i , first]+ array[i , second]
+            else : 
+                if first == cols - 1 :
+                    newArray[i , cols - 2] =  array[i , first]+ array[i , second]
+                else :
+                    newArray[i , first - 1] =  array[i , first]+ array[i , second]
+            
+        if first <= second :
+            k = 0
         
-        #刪掉被併掉的那列
-        k = 0
-        
-        #前面重複的
-        while(k < second) :
-            if k != first :
+            #前面重複的
+            while(k < second) :
+                if k != first :
+                    for i in range(rows) : 
+                        newArray[i , k] = array[i , k]
+            
+                k = k + 1
+                
+            #後面往前位移的
+            p = second
+            while(p < rows - 1) :
                 for i in range(rows) : 
-                    newArray[i , k] = array[i , k]
-            k = k+1
-        
-        
-        #後面往前位移的
-        p = second
-        print(cols - 2)
-        
-        while(p < cols - 1) :
-            if first == cols - 1 :
-                if p != first - 1 :
-                    for i in range(rows) : 
-                        newArray[i , p] = array[i , p+1]
-            else :
-                if p != first :
-                    for i in range(rows) : 
-                        newArray[i , p] = array[i , p+1]
+                    newArray[i , p] = array[i , p+1]
+                
+                p = p + 1
+                
+        else :
+            k = 0
+            while k < second :
+                for i in range(rows) : 
+                        newArray[i , k] = array[i , k]
+                k = k+1
+                  
+            p = second
             
-            p = p+1
+            while(p < cols - 1) :
+                '''
+                if first == cols - 1 :
+                    if p != first - 1 :
+                        if p == cols - 1 :
+                            for i in range(rows) : 
+                                newArray[i , p] = array[i , p]
+                        else :
+                            for i in range(rows) : 
+                                newArray[i , p] = array[i , p+1]
+
+                else :
+                    if p != first-1 :
+                        if p == cols - 1 :
+                            for i in range(rows) : 
+                                newArray[i , p] = array[i , p]
+                        else :
+                            for i in range(rows) : 
+                                newArray[i , p] = array[i , p+1]
+                '''
+                
+                if p != first-1 :
+                    if p == cols - 1 :
+                        for i in range(rows) : 
+                            newArray[i , p] = array[i , p]
+                    else :
+                        for i in range(rows) : 
+                            newArray[i , p] = array[i , p+1]
+                p = p + 1
             
+      
             
         print(str(first) + "行和" + str(second) + "行已經被整併")
         return newArray
@@ -271,6 +342,105 @@ def three(array) :
 
 #3 of function end
 
+#4 of function
+def four(array) :
+    
+    while(1) : 
+        com = input("請問要刪除列還是行(1 => 列 , 2 => 行) : ")
+        if com == '1' or com == '2' :
+            break
+        else : 
+            print("請輸入1或2")
+    
+    #計算row col
+    row , col = array.shape
+    
+    #input row
+    if com == '1' :
+        print("請問要刪除哪一列")
+        while(1) : 
+            delnum = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            if 0 <= delnum < row :
+                break;
+            else : 
+                print("請介於0和" + str(row) + "之間")
+            
+    #input col
+    elif com == '2' :
+        print("請問要刪除哪一行")
+        while(1) : 
+            delnum = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            if 0 <= delnum < col :
+                break;
+            else : 
+                print("請介於0和" + str(col) + "之間")
+        
+    return delete(array , delnum , com)
+        
+def delete(array , delnum , com) :
+    if com == '1' :  #row
+        return numpy.delete(array , delnum , axis = 0)
+    
+    elif com == '2' :  #col
+        return numpy.delete(array , delnum , axis = 1)
+
+#4 of function end
+
+#5 of function
+def five(array) :
+    while(1) : 
+        com = input("請問要新增列還是行(1 => 列 , 2 => 行) : ")
+        if com == '1' or com == '2' :
+            break
+        else : 
+            print("請輸入1或2")
+    
+    row = array.shape[0]
+    col = array.shape[1]
+    
+    #input row
+    if com == '1' :
+        print("請問要新增在哪一列之後")
+        while(1) : 
+            loc = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            if 0 <= loc < row :
+                break;
+            else : 
+                print("請介於0和" + str(row) + "之間")
+        
+        print("請輸入要新增的資料")
+        data = []
+        for i in range(col) :
+            inputData = input("請輸入第" + str(i+1) + "個資料 : ")
+            data.append(inputData)
+            
+    #input col
+    elif com == '2' :
+        print("請問要新增在哪一行之後")
+        while(1) : 
+            loc = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            if 0 <= loc < col :
+                break;
+            else : 
+                print("請介於0和" + str(col) + "之間")
+        
+        
+        print("請輸入要新增的資料")
+        data = []
+        for i in range(row) :
+            inputData = input("請輸入第" + str(i+1) + "個資料 : ")
+            data.append(inputData)
+        
+    newdata = numpy.array(data , dtype=('str'))
+    return newData(array , newdata , loc , com)
+
+def newData(array , newdata , loc , com) :
+    if com == '1' :
+        return numpy.insert(array , loc , newdata , 0)
+    elif com == '2' :
+        return numpy.insert(array , loc , newdata , 1)
+
+#5 of function end
 
 '''
 function part end
@@ -324,8 +494,14 @@ while(1) :
         array = three(array)
     elif command == '4' :
         print("欄位刪除")
+        array = four(array)
+        print("output")
+        print(array)
     elif command == '5' :
         print("欄位新增")
+        array = five(array)
+        print("output")
+        print(array)
     elif command == '6' :
         print("依照哪幾個欄位進行排序")
     elif command == '7' :
