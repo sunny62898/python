@@ -21,6 +21,7 @@ Created on Thu Jul  8 22:35:39 2021
 
 import numpy
 import openpyxl
+import json
 
 '''
 function part 
@@ -159,6 +160,13 @@ def combine(array , first , second , com) :
                 p = p + 1
                 
         print(str(first) + "列和" + str(second) + "列已經被整併")
+        
+        #寫入JSON
+        output = str(first) + "列和" + str(second) + "列已經被整併"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+            
+        
         return newArray
     #end of row
     
@@ -241,6 +249,12 @@ def combine(array , first , second , com) :
       
             
         print(str(first) + "行和" + str(second) + "行已經被整併")
+        
+        #寫入JSON
+        output = str(first) + "行和" + str(second) + "行已經被整併"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
         return newArray
     #end of col
     
@@ -305,12 +319,22 @@ def change(array , change1 , change2 , com) :
         print(array)
         print(str(change1) + "列和" + str(change2) + "列已經對調")
         
+        #寫入JSON
+        output = str(change1) + "列和" + str(change2) + "列已經對調"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
         
     #col
     elif com == '2' :
         array[: , [change1,change2]] = array[: , [change2,change1]]
         print(array)
         print(str(change1) + "行和" + str(change2) + "行已經對調")
+        
+        #寫入JSON
+        output = str(change1) + "行和" + str(change2) + "行已經對調"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
         
     return array
 
@@ -338,6 +362,11 @@ def three(array) :
     str(newArray)
     print(newArray)
     print("已經將" + str(changeStr) + "換成" + str(changeTo))
+    
+    #寫入JSON
+    output = "已經將" + str(changeStr) + "換成" + str(changeTo)
+    with open('record.json','a',encoding='utf-8') as fp :
+        json.dump(output, fp)
     
     return newArray
 
@@ -380,10 +409,30 @@ def four(array) :
         
 def delete(array , delnum , com) :
     if com == '1' :  #row
-        return numpy.delete(array , delnum , axis = 0)
+    
+        array = numpy.delete(array , delnum , axis = 0)
+        
+        print("第" + str(delnum) + "列已被刪除")
+        
+        #寫入JSON
+        output = "第" + str(delnum) + "列已被刪除"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+    
+        return array
     
     elif com == '2' :  #col
-        return numpy.delete(array , delnum , axis = 1)
+    
+        array = numpy.delete(array , delnum , axis = 1)
+        
+        print("第" + str(delnum) + "行已被刪除")
+        
+        #寫入JSON
+        output = "第" + str(delnum) + "行已被刪除"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
+        return array
 
 #4 of function end
 
@@ -437,9 +486,29 @@ def five(array) :
 
 def newData(array , newdata , loc , com) :
     if com == '1' :
-        return numpy.insert(array , loc , newdata , 0)
+        
+        array = numpy.insert(array , loc , newdata , 0)
+        
+        print("第" + str(loc) + "列已被新增")
+        
+        #寫入JSON
+        output = "第" + str(loc) + "列已被新增"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
+        return array
     elif com == '2' :
-        return numpy.insert(array , loc , newdata , 1)
+        
+        array = numpy.insert(array , loc , newdata , 1)
+        
+        print("第" + str(loc) + "行已被新增")
+        
+        #寫入JSON
+        output = "第" + str(loc) + "行已被新增"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
+        return array
 
 #5 of function end
 
@@ -466,10 +535,16 @@ def six(array) :
             else : 
                 print("請介於0和" + str(row) + "之間")
                 
+        array = array[: , numpy.argsort(array[loc , :])]
         
-        print(numpy.sort(array[loc , :]))
+        print("已經依照" + str(loc) + "列進行排序")
         
-        return array[: , numpy.argsort(array[loc , :])]
+        #寫入JSON
+        output = "已經依照" + str(loc) + "列進行排序"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+        
+        return array
     
     #input col
     elif com == '2' :
@@ -481,7 +556,16 @@ def six(array) :
             else : 
                 print("請介於0和" + str(col) + "之間")
                 
-        return array[numpy.argsort(array[: , loc])]
+        array = array[numpy.argsort(array[: , loc])]
+        
+        print("已經依照" + str(loc) + "行進行排序")
+        
+        #寫入JSON
+        output = "已經依照" + str(loc) + "行進行排序"
+        with open('record.json','a',encoding='utf-8') as fp :
+            json.dump(output, fp)
+                
+        return array
     
 #6 of function end
 
@@ -489,7 +573,12 @@ def six(array) :
 def seven(array) :
     
     print("目前 : " + str(array.shape))
-    print("所輸入的數值應相乘為" + str(array.shape[0] * array.shape[1]))
+    now = array.shape
+    nowsum = 1
+    for i in range(len(now)) :
+                nowsum = nowsum * now[i]
+    
+    print("所輸入的數值應相乘為" + str(nowsum))
     while(1) : 
         com = input("請問要轉換為(數字與數字間用逗號\',\'間隔) : ")
         
@@ -511,15 +600,24 @@ def seven(array) :
             for i in range(len(cut)) :
                 sumnum = sumnum * cut[i]
                 
-            if sumnum == (array.shape[0] * array.shape[1]) :
+            if sumnum == int(nowsum) :
                 break
             else :
-                print("所輸入的數值應相乘為" + str(array.shape[0] * array.shape[1]))
+                print("所輸入的數值應相乘為" + str(nowsum))
         else : 
             print("請輸入數字並用逗號\',\'間隔")
     
     #轉換維度
-    return array.reshape(cut)
+    array = array.reshape(cut)
+    
+    print("已轉換為" + str(array.shape) + "的維度")
+    
+    #寫入JSON
+    output = "已轉換為" + str(array.shape) + "的維度"
+    with open('record.json','a',encoding='utf-8') as fp :
+        json.dump(output, fp)
+    
+    return array
    
 #7 of function end
 
