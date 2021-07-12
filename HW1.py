@@ -192,8 +192,9 @@ def combine(array , first , second , com) :
                 
             #後面往前位移的
             p = second
-            while(p < rows - 1) :
+            while(p < cols - 1) :
                 for i in range(rows) : 
+                    print(p)
                     newArray[i , p] = array[i , p+1]
                 
                 p = p + 1
@@ -442,6 +443,86 @@ def newData(array , newdata , loc , com) :
 
 #5 of function end
 
+#6 of fuction
+def six(array) :
+    while(1) : 
+        com = input("請問要依照列還是行進行排序(1 => 列 , 2 => 行) : ")
+        if com == '1' or com == '2' :
+            break
+        else : 
+            print("請輸入1或2")
+    
+    row = array.shape[0]
+    col = array.shape[1]
+    
+    
+    #input row
+    if com == '1' :
+        print("請問要依照哪一列進行排序")
+        while(1) : 
+            loc = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            if 0 <= loc < row :
+                break;
+            else : 
+                print("請介於0和" + str(row) + "之間")
+                
+        
+        print(numpy.sort(array[loc , :]))
+        
+        return array[: , numpy.argsort(array[loc , :])]
+    
+    #input col
+    elif com == '2' :
+        print("請問要依照哪一行進行排序")
+        while(1) : 
+            loc = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            if 0 <= loc < col :
+                break;
+            else : 
+                print("請介於0和" + str(col) + "之間")
+                
+        return array[numpy.argsort(array[: , loc])]
+    
+#6 of function end
+
+#7 of function
+def seven(array) :
+    
+    print("目前 : " + str(array.shape))
+    print("所輸入的數值應相乘為" + str(array.shape[0] * array.shape[1]))
+    while(1) : 
+        com = input("請問要轉換為(數字與數字間用逗號\',\'間隔) : ")
+        
+        test = 0
+        for i in range(len(com)) :
+            if i == len(com) - 1 :
+                if com[i] == ',' :
+                    test = 1
+                    continue
+            if ('0' > com[i] or '9' < com[i]) and ',' != com[i] :
+                test = 1
+                break
+                
+        if test == 0 :
+            cut = com.split(',')
+            #轉換str to int
+            cut[:] = [int(x) for x in cut]
+            sumnum = 1
+            for i in range(len(cut)) :
+                sumnum = sumnum * cut[i]
+                
+            if sumnum == (array.shape[0] * array.shape[1]) :
+                break
+            else :
+                print("所輸入的數值應相乘為" + str(array.shape[0] * array.shape[1]))
+        else : 
+            print("請輸入數字並用逗號\',\'間隔")
+    
+    #轉換維度
+    return array.reshape(cut)
+   
+#7 of function end
+
 '''
 function part end
 '''
@@ -504,8 +585,14 @@ while(1) :
         print(array)
     elif command == '6' :
         print("依照哪幾個欄位進行排序")
+        array = six(array)
+        print("output")
+        print(array)
     elif command == '7' :
         print("多維度轉換")
+        array = seven(array)
+        print("output")
+        print(array)
     elif command == 'e' : 
         print("See you~")
         break
