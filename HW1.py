@@ -86,7 +86,7 @@ def combine(array , first , second , com) :
     #計算行數列數
     rows , cols = array.shape
     
-    print(array)
+    #print(array)
     #row
     #指定列 => 跑行
     if com == '1' :
@@ -162,9 +162,10 @@ def combine(array , first , second , com) :
         print(str(first) + "列和" + str(second) + "列已經被整併")
         
         #寫入JSON
-        output = str(first) + "列和" + str(second) + "列已經被整併"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = str(first) + "列和" + str(second) + "列已經被整併\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
             
         
         return newArray
@@ -202,7 +203,6 @@ def combine(array , first , second , com) :
             p = second
             while(p < cols - 1) :
                 for i in range(rows) : 
-                    print(p)
                     newArray[i , p] = array[i , p+1]
                 
                 p = p + 1
@@ -251,9 +251,10 @@ def combine(array , first , second , com) :
         print(str(first) + "行和" + str(second) + "行已經被整併")
         
         #寫入JSON
-        output = str(first) + "行和" + str(second) + "行已經被整併"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = str(first) + "行和" + str(second) + "行已經被整併\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         return newArray
     #end of col
@@ -316,25 +317,27 @@ def change(array , change1 , change2 , com) :
     #row
     if com == '1' :
         array[[change1,change2] , :] = array[[change2,change1] , :]
-        print(array)
+        #print(array)
         print(str(change1) + "列和" + str(change2) + "列已經對調")
         
         #寫入JSON
-        output = str(change1) + "列和" + str(change2) + "列已經對調"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = str(change1) + "列和" + str(change2) + "列已經對調\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         
     #col
     elif com == '2' :
         array[: , [change1,change2]] = array[: , [change2,change1]]
-        print(array)
+        #print(array)
         print(str(change1) + "行和" + str(change2) + "行已經對調")
         
         #寫入JSON
-        output = str(change1) + "行和" + str(change2) + "行已經對調"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = str(change1) + "行和" + str(change2) + "行已經對調\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
     return array
 
@@ -354,19 +357,20 @@ def three(array) :
     for i in range(row) :
         for j in range(col) :
             if array[i,j] == changeStr :
-                print(changeTo)
+                
                 newArray[i,j] = changeTo
             else :
                 newArray[i,j] = array[i,j]
           
     str(newArray)
-    print(newArray)
+    
     print("已經將" + str(changeStr) + "換成" + str(changeTo))
     
     #寫入JSON
-    output = "已經將" + str(changeStr) + "換成" + str(changeTo)
-    with open('record.json','a',encoding='utf-8') as fp :
-        json.dump(output, fp)
+    output = "已經將" + str(changeStr) + "換成" + str(changeTo) + "\n"
+    with open('record.json','a') as fp :
+        #json.dump(output, fp)
+        fp.write(output)
     
     return newArray
 
@@ -415,9 +419,10 @@ def delete(array , delnum , com) :
         print("第" + str(delnum) + "列已被刪除")
         
         #寫入JSON
-        output = "第" + str(delnum) + "列已被刪除"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "第" + str(delnum) + "列已被刪除\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
     
         return array
     
@@ -428,9 +433,10 @@ def delete(array , delnum , com) :
         print("第" + str(delnum) + "行已被刪除")
         
         #寫入JSON
-        output = "第" + str(delnum) + "行已被刪除"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "第" + str(delnum) + "行已被刪除\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         return array
 
@@ -492,9 +498,10 @@ def newData(array , newdata , loc , com) :
         print("第" + str(loc) + "列已被新增")
         
         #寫入JSON
-        output = "第" + str(loc) + "列已被新增"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "第" + str(loc) + "列已被新增\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         return array
     elif com == '2' :
@@ -504,9 +511,10 @@ def newData(array , newdata , loc , com) :
         print("第" + str(loc) + "行已被新增")
         
         #寫入JSON
-        output = "第" + str(loc) + "行已被新增"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "第" + str(loc) + "行已被新增\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         return array
 
@@ -540,9 +548,10 @@ def six(array) :
         print("已經依照" + str(loc) + "列進行排序")
         
         #寫入JSON
-        output = "已經依照" + str(loc) + "列進行排序"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "已經依照" + str(loc) + "列進行排序\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
         
         return array
     
@@ -561,9 +570,10 @@ def six(array) :
         print("已經依照" + str(loc) + "行進行排序")
         
         #寫入JSON
-        output = "已經依照" + str(loc) + "行進行排序"
-        with open('record.json','a',encoding='utf-8') as fp :
-            json.dump(output, fp)
+        output = "已經依照" + str(loc) + "行進行排序\n"
+        with open('record.json','a') as fp :
+            #json.dump(output, fp)
+            fp.write(output)
                 
         return array
     
@@ -613,13 +623,16 @@ def seven(array) :
     print("已轉換為" + str(array.shape) + "的維度")
     
     #寫入JSON
-    output = "已轉換為" + str(array.shape) + "的維度"
-    with open('record.json','a',encoding='utf-8') as fp :
-        json.dump(output, fp)
+    output = "已轉換為" + str(array.shape) + "的維度\n"
+    with open('record.json','a') as fp :
+        #json.dump(output, fp)
+        fp.write(output)
+        
     
     return array
    
 #7 of function end
+
 
 '''
 function part end
@@ -631,16 +644,16 @@ function part end
 main function
 '''
 #read file
-wb = openpyxl.load_workbook('test0.xlsx')  #讀入excel
+wb = openpyxl.load_workbook('test2.xlsx')  #讀入excel
 wb_data = wb.active
 
 readList = [row for row in wb_data.values]
 
 array = numpy.array(readList , dtype=('str'))
 
-print(type(readList[0][1]))
+#print(type(readList[0][1]))
 
-print(array)
+#print(array)
 
 #end of read file 
 
@@ -656,48 +669,101 @@ print("5 => 欄位新增")
 print("6 => 依照哪幾個欄位進行排序")
 print("7 => 多維度轉換")
 print("e => 離開此程式")
-command = input("command = ")
+
 while(1) :
+    command = input("command = ")
+    
     if command == '1' :
         print("整併欄位")
         array = one(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('combine.json','w') as fp :
+            json.dump(output, fp)
+            
+        
     elif command == '2' :
         print("欄位調換")
         array = two(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('change.json','w') as fp :
+            json.dump(output, fp)
+            
     elif command == '3' :
         print("欄位處理(調換有指定字的欄位)")
         array = three(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('deal.json','w') as fp :
+            json.dump(output, fp)
+        
     elif command == '4' :
         print("欄位刪除")
         array = four(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('delete.json','w') as fp :
+            json.dump(output, fp)
+        
     elif command == '5' :
         print("欄位新增")
         array = five(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('add.json','w') as fp :
+            json.dump(output, fp)
+        
     elif command == '6' :
         print("依照哪幾個欄位進行排序")
         array = six(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('sort.json','w') as fp :
+            json.dump(output, fp)
+        
     elif command == '7' :
         print("多維度轉換")
         array = seven(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
+        
+        #寫入JSON
+        output = array
+        output = output.tolist()
+        with open('dimension.json','w') as fp :
+            json.dump(output, fp)
+        
     elif command == 'e' : 
         print("See you~")
         break
     else : 
         print("input error")
     
-    command = input("command = ")
     
 '''
 end of main function
