@@ -32,6 +32,8 @@ def one(array) :
         com = input("請問要合併列還是行(1 => 列 , 2 => 行) : ")
         if com == '1' or com == '2' :
             break
+        elif com == 'q' :
+            return array
         else : 
             print("請輸入1或2")
     
@@ -47,14 +49,24 @@ def one(array) :
         print("請問要整併哪兩列")
     
         while(1) : 
-            Comb1 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            Comb1 = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if Comb1 == 'q' :
+                return array
+            else : 
+                Comb1 = int(Comb1)
+                
             if 0 <= Comb1 < row :
                 break;
             else : 
                 print("請介於0和" + str(row) + "之間")
                 
         while(1) : 
-            Comb2 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            Comb2 = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if Comb2 == 'q' :
+                return array
+            else : 
+                Comb2 = int(Comb2)
+                
             if 0 <= Comb2 < row :
                 break;
             else : 
@@ -65,13 +77,23 @@ def one(array) :
     elif com == '2' :
         print("請問要整併哪兩行")
         while(1) : 
-            Comb1 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            Comb1 = input("請輸入列(請介於0和" + str(col-1) + "之間) : ")
+            if Comb1 == 'q' :
+                return array
+            else : 
+                Comb1 = int(Comb1)
+            
             if 0 <= Comb1 < col :
                 break;
             else : 
                 print("請介於0和" + str(col) + "之間")
         while(1) : 
-            Comb2 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            Comb2 = input("請輸入列(請介於0和" + str(col-1) + "之間) : ")
+            if Comb2 == 'q' :
+                return array
+            else : 
+                Comb2 = int(Comb2)
+            
             if 0 <= Comb2 < col :
                 break;
             else : 
@@ -267,6 +289,8 @@ def two(array) :
         com = input("請問要對調列還是行(1 => 列 , 2 => 行) : ")
         if com == '1' or com == '2' :
             break
+        elif com == 'q' :
+            return array
         else : 
             print("請輸入1或2")
     
@@ -279,14 +303,24 @@ def two(array) :
     if com == '1' :
         print("請問要對調哪兩列")
         while(1) : 
-            Change1 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            Change1 = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if Change1 == 'q' :
+                return array
+            else : 
+                Change1 = int(Change1)
+            
             if 0 <= Change1 < row :
                 break;
             else : 
                 print("請介於0和" + str(row) + "之間")
                 
         while(1) : 
-            Change2 = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            Change2 = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if Change2 == 'q' :
+                return array
+            else : 
+                Change2 = int(Change2)
+            
             if 0 <= Change2 < row :
                 break;
             else : 
@@ -297,13 +331,23 @@ def two(array) :
     elif com == '2' :
         print("請問要對調哪兩行")
         while(1) : 
-            Change1 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            Change1 = input("請輸入列(請介於0和" + str(col-1) + "之間) : ")
+            if Change1 == 'q' :
+                return array
+            else : 
+                Change1 = int(Change1)
+            
             if 0 <= Change1 < col :
                 break;
             else : 
                 print("請介於0和" + str(col) + "之間")
         while(1) : 
-            Change2 = int(input("請輸入列(請介於0和" + str(col-1) + "之間) : "))
+            Change2 = input("請輸入列(請介於0和" + str(col-1) + "之間) : ")
+            if Change2 == 'q' :
+                return array
+            else : 
+                Change2 = int(Change2)
+            
             if 0 <= Change2 < col :
                 break;
             else : 
@@ -383,6 +427,8 @@ def four(array) :
         com = input("請問要刪除列還是行(1 => 列 , 2 => 行) : ")
         if com == '1' or com == '2' :
             break
+        elif com == 'q' :
+            return array
         else : 
             print("請輸入1或2")
     
@@ -393,9 +439,14 @@ def four(array) :
     if com == '1' :
         print("請問要刪除哪一列")
         while(1) : 
-            delnum = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            delnum = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if delnum == 'q' :
+                return array
+            else : 
+                delnum = int(delnum)
+            
             if 0 <= delnum < row :
-                break;
+                break
             else : 
                 print("請介於0和" + str(row) + "之間")
             
@@ -403,9 +454,14 @@ def four(array) :
     elif com == '2' :
         print("請問要刪除哪一行")
         while(1) : 
-            delnum = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            delnum = input("請輸入行(請介於0和" + str(col-1) + "之間) : ")
+            if delnum == 'q' :
+                return array
+            else : 
+                delnum = int(delnum)
+            
             if 0 <= delnum < col :
-                break;
+                break
             else : 
                 print("請介於0和" + str(col) + "之間")
         
@@ -448,6 +504,8 @@ def five(array) :
         com = input("請問要新增列還是行(1 => 列 , 2 => 行) : ")
         if com == '1' or com == '2' :
             break
+        elif com == 'q' :
+            return array
         else : 
             print("請輸入1或2")
     
@@ -458,9 +516,14 @@ def five(array) :
     if com == '1' :
         print("請問要新增在哪一列之後")
         while(1) : 
-            loc = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            loc = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if loc == 'q' :
+                return array
+            else : 
+                loc = int(loc)
+            
             if 0 <= loc < row :
-                break;
+                break
             else : 
                 print("請介於0和" + str(row) + "之間")
         
@@ -474,9 +537,14 @@ def five(array) :
     elif com == '2' :
         print("請問要新增在哪一行之後")
         while(1) : 
-            loc = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            loc = input("請輸入行(請介於0和" + str(col-1) + "之間) : ")
+            if loc == 'q' :
+                return array
+            else : 
+                loc = int(loc)
+            
             if 0 <= loc < col :
-                break;
+                break
             else : 
                 print("請介於0和" + str(col) + "之間")
         
@@ -526,6 +594,8 @@ def six(array) :
         com = input("請問要依照列還是行進行排序(1 => 列 , 2 => 行) : ")
         if com == '1' or com == '2' :
             break
+        elif com == 'q' :
+            return array
         else : 
             print("請輸入1或2")
     
@@ -537,9 +607,14 @@ def six(array) :
     if com == '1' :
         print("請問要依照哪一列進行排序")
         while(1) : 
-            loc = int(input("請輸入列(請介於0和" + str(row-1) + "之間) : "))
+            loc = input("請輸入列(請介於0和" + str(row-1) + "之間) : ")
+            if loc == 'q' :
+                return array
+            else : 
+                loc = int(loc)
+            
             if 0 <= loc < row :
-                break;
+                break
             else : 
                 print("請介於0和" + str(row) + "之間")
                 
@@ -559,9 +634,14 @@ def six(array) :
     elif com == '2' :
         print("請問要依照哪一行進行排序")
         while(1) : 
-            loc = int(input("請輸入行(請介於0和" + str(col-1) + "之間) : "))
+            loc = input("請輸入行(請介於0和" + str(col-1) + "之間) : ")
+            if loc == 'q' :
+                return array
+            else : 
+                loc = int(loc)
+            
             if 0 <= loc < col :
-                break;
+                break
             else : 
                 print("請介於0和" + str(col) + "之間")
                 
@@ -591,6 +671,8 @@ def seven(array) :
     print("所輸入的數值應相乘為" + str(nowsum))
     while(1) : 
         com = input("請問要轉換為(數字與數字間用逗號\',\'間隔) : ")
+        if com == 'q' :
+            return array
         
         test = 0
         for i in range(len(com)) :
@@ -669,6 +751,7 @@ print("5 => 欄位新增")
 print("6 => 依照哪幾個欄位進行排序")
 print("7 => 多維度轉換")
 print("e => 離開此程式")
+print("q =>在輸入時按下可以回到主選功能")
 
 while(1) :
     command = input("command = ")
