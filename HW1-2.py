@@ -110,6 +110,7 @@ def combine(array , first , second , com) :
     rows , cols = array.shape
     
     #print(array)
+    
     #row
     #指定列 => 跑行
     if com == '1' :
@@ -125,8 +126,6 @@ def combine(array , first , second , com) :
                     newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
                 else :
                     newArray[first - 1 , i] =  array[first , i]+ array[second , i]
-                             
-        
             
         if first <= second :
             k = 0
@@ -156,7 +155,6 @@ def combine(array , first , second , com) :
                   
             p = second
             while(p < rows-1) :
-                
                 if p != first-1 :
                     if p == rows - 1 :
                         for i in range(cols) :
@@ -181,60 +179,11 @@ def combine(array , first , second , com) :
     #col
     #指定行 => 跑列
     elif com == '2' :
-        newArray = numpy.empty([rows , cols - 1], dtype = ('object'))
-        for i in range(rows) : 
-            
-            if first <= second :
-                if first == cols - 1 :
-                    newArray[i , cols - 2] =  array[i , first]+ array[i , second]
-                else :
-                    newArray[i , first] =  array[i , first]+ array[i , second]
-            else : 
-                if first == cols - 1 :
-                    newArray[i , cols - 2] =  array[i , first]+ array[i , second]
-                else :
-                    newArray[i , first - 1] =  array[i , first]+ array[i , second]
-            
-        if first <= second :
-            k = 0
+        array = array.tolist()
         
-            #前面重複的
-            while(k < second) :
-                if k != first :
-                    for i in range(rows) : 
-                        newArray[i , k] = array[i , k]
-            
-                k = k + 1
-                
-            #後面往前位移的
-            p = second
-            while(p < cols - 1) :
-                for i in range(rows) : 
-                    newArray[i , p] = array[i , p+1]
-                
-                p = p + 1
-                
-        else :
-            k = 0
-            while k < second :
-                for i in range(rows) : 
-                        newArray[i , k] = array[i , k]
-                k = k+1
-                  
-            p = second
-            
-            while(p < cols - 1) :
-                
-                if p != first-1 :
-                    if p == cols - 1 :
-                        for i in range(rows) : 
-                            newArray[i , p] = array[i , p]
-                    else :
-                        for i in range(rows) : 
-                            newArray[i , p] = array[i , p+1]
-                p = p + 1
-            
-      
+        newArray = [[row[i]  if i != first else row[first]+row[second] for i in range(len(array[0])) if i != second ] for row in array]
+        
+        print(newArray)
             
         print(str(first) + "行和" + str(second) + "行已經被整併")
         
@@ -243,6 +192,8 @@ def combine(array , first , second , com) :
         with open('record.json','a') as fp :
             #json.dump(output, fp)
             fp.write(output)
+        
+        newArray = numpy.array(newArray)
         
         return newArray
     #end of col
@@ -359,23 +310,11 @@ def three(array) :
     changeTo = input("請輸入要換成什麼字串 : ")
     
     #計算row col
-    row , col = array.shape
     
-    newArray = numpy.empty([row , col], dtype = ('object'))
+    array = array.tolist()
     
+    newArray = [[x[i] if x[i] != changeStr else changeTo for i in range(len(array[0])) ] for x in array]
     
-    for i in range(row) :
-        
-        for j in range(col) :
-            if array[i,j] == changeStr :
-                
-                newArray[i,j] = changeTo
-            else :
-                newArray[i,j] = array[i,j]
-        
-    
-        
-    str(newArray)
     
     print("已經將" + str(changeStr) + "換成" + str(changeTo))
     
@@ -384,7 +323,8 @@ def three(array) :
     with open('record.json','a') as fp :
         #json.dump(output, fp)
         fp.write(output)
-    
+        
+    newArray = numpy.array(newArray , dtype=('str'))
     return newArray
 
 #3 of function end
