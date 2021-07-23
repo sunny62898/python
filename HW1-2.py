@@ -40,10 +40,6 @@ def one(array) :
     
     row = array.shape[0]
     col = array.shape[1]
-    #row = len(array)
-    #col = len(array[0])
-    
-    
     
     #input row
     if com == '1' :
@@ -106,64 +102,20 @@ def one(array) :
 
 def combine(array , first , second , com) : 
     
-    #計算行數列數
-    rows , cols = array.shape
-    
-    #print(array)
     
     #row
     #指定列 => 跑行
     if com == '1' :
-        newArray = numpy.empty([rows - 1 , cols], dtype = ('object'))
-        for i in range(cols) : 
-            if first <= second :
-                if first == rows-1 :
-                    newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
-                else :
-                    newArray[first , i] =  array[first , i]+ array[second , i]
-            else : 
-                if first == rows-1 :
-                    newArray[rows - 2 , i] =  array[first , i]+ array[second , i]
-                else :
-                    newArray[first - 1 , i] =  array[first , i]+ array[second , i]
-            
-        if first <= second :
-            k = 0
         
-            #前面重複的
-            while(k < second) :
-                if k != first :
-                    for i in range(cols) : 
-                        newArray[k , i] = array[k , i]
-            
-                k = k+1
-                
-            #後面往前位移的
-            p = second
-            while(p < rows - 1) :
-                for i in range(cols) : 
-                    newArray[p , i] = array[p+1 , i]
-                
-                p = p+1
+        array = array.tolist()
         
-        else :
-            k = 0
-            while k < second :
-                for i in range(cols) : 
-                    newArray[k , i] = array[k , i]
-                k = k+1
-                  
-            p = second
-            while(p < rows-1) :
-                if p != first-1 :
-                    if p == rows - 1 :
-                        for i in range(cols) :
-                            newArray[p , i] = array[p , i]
-                    else :
-                        for i in range(cols) :
-                            newArray[p , i] = array[p+1 , i]
-                p = p + 1
+        newArray = [
+                    [b for j,b in enumerate(a)] if i != first else
+                    [b+array[second][j] for j,b in enumerate(a)]
+                    for i,a in enumerate(array) if i != second
+                    ]
                 
+        
         print(str(first) + "列和" + str(second) + "列已經被整併")
         
         #寫入JSON
@@ -172,19 +124,23 @@ def combine(array , first , second , com) :
             #json.dump(output, fp)
             fp.write(output)
             
-        
+        newArray = numpy.array(newArray)
         return newArray
     #end of row
     
     #col
     #指定行 => 跑列
     elif com == '2' :
+        
         array = array.tolist()
         
-        newArray = [[row[i]  if i != first else row[first]+row[second] for i in range(len(array[0])) if i != second ] for row in array]
+        newArray = [
+                    [row[i] if i != first else row[first]+row[second] 
+                    for i in range(len(array[0])) if i != second ] 
+                    for row in array
+                    ]
         
-        print(newArray)
-            
+        
         print(str(first) + "行和" + str(second) + "行已經被整併")
         
         #寫入JSON
@@ -688,8 +644,8 @@ while(1) :
     elif command == '3' :
         print("欄位處理(調換有指定字的欄位)")
         array = three(array)
-        print("output")
-        print(array)
+        #print("output")
+        #print(array)
         
         #寫入JSON
         output = array
