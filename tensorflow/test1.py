@@ -8,6 +8,10 @@ Created on Mon Jul 26 23:24:40 2021
 import tensorflow
 import keras
 
+import json
+import numpy
+
+
 print(tensorflow.__version__)
 print(keras.__version__)
 print(tensorflow.test.is_gpu_available())
