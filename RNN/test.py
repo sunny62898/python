@@ -16,6 +16,7 @@ import numpy as np
 import random
 import sys
 import io
+import os.path
 
 
 #讀取數據
@@ -83,22 +84,45 @@ def sample(predicts, temperature) :
     
     return np.argmax(problas)
 
+
+#存到指定資料夾
+output_folder = "output_text"
+save_path = os.path.join(output_folder)
+#print(save_path)
+if not os.path.exists(save_path) :
+    os.mkdir(save_path)
+
+
 #文本生成的循環(利用for來循環生成文本)
 for epoch in range(1, 5) :
     print("EPOCH : ", epoch)  #訓練到第幾次
+    #健力第幾次訓練所產生的txt
+    count = epoch
+    outPath = os.path.join(save_path, "train_{}.txt".format(str(count)))
+    file_txt = open(outPath, 'w')
+    
     
     #訓練model
-    model.fit(x, y, batch_size=128, epochs=1)
+    model.fit(x, y, batch_size=128, epochs=5)
     
     #隨機選擇文本種子
     start_index = random.randint(0, len(text) - maxlen - 1)
     generate_text = text[start_index : start_index+maxlen]
-    print('---Generating with seed "' + generate_text + '"')
+    #print('---Generating with seed "' + generate_text + '"')
+    
+    #寫入txt
+    file_txt.write('---Generating with seed "' + generate_text + '"\n')
+    
     
     #嘗試用不同溫度做採樣
     for temperature in [0.2, 0.5, 1.0, 1.2] :
         print("temperature : ", temperature)
-        sys.stdout.write(generate_text)
+        #sys.stdout.write(generate_text)
+        
+        #寫入txt
+        write_temp = temperature
+        file_txt.write("\ntemperature : " + str(write_temp) + "\n")
+        file_txt.write(generate_text)
         
         #從種子文本開始生成400個字
         for i in range(400) :
@@ -115,9 +139,14 @@ for epoch in range(1, 5) :
             generate_text += next_char
             generate_text = generate_text[1:]
             
-            sys.stdout.write(next_char)
-            sys.stdout.flush()
+            #寫入txt
+            file_txt.writelines(next_char)
             
-        print()
+            #sys.stdout.write(next_char)
+            #sys.stdout.flush()
+            
+        #print()
         
+    file_txt.close()
+      
 
