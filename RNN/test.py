@@ -95,6 +95,7 @@ if not os.path.exists(save_path) :
 
 #文本生成的循環(利用for來循環生成文本)
 for epoch in range(1, 5) :
+    #建議的epoch為60次
     print("EPOCH : ", epoch)  #訓練到第幾次
     #健力第幾次訓練所產生的txt
     count = epoch
@@ -103,7 +104,8 @@ for epoch in range(1, 5) :
     
     
     #訓練model
-    model.fit(x, y, batch_size=128, epochs=5)
+    model.fit(x, y, batch_size=128, epochs=1)
+    #可改變一個epoch所training的次數
     
     #隨機選擇文本種子
     start_index = random.randint(0, len(text) - maxlen - 1)
