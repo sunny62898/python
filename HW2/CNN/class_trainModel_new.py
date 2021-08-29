@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 10 22:45:12 2021
+Created on Fri Aug 27 00:59:41 2021
 
 @author: User
 """
 
 
-import cv2
+
 import pickle
-import os.path
-import numpy as np
-from imutils import paths
+from sklearn import svm
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score,hamming_loss
 from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score,log_loss
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
-from helpers import resize_to_fit
+from keras.models import Sequential,Model
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense,GlobalAveragePooling2D, Dropout
+from keras.applications.inception_resnet_v2 import InceptionResNetV2
+from keras.applications import ResNet50, ResNet101
+from keras.applications.inception_v3 import InceptionV3
+import numpy as np
+
 
 
 class train_Model :
@@ -28,41 +31,42 @@ class train_Model :
         
         #讀取並分割x_train, x_test, y_train, y_test 等資料
         (self.x_train, self.x_test, self.y_train, self.y_test) = train_test_split(data, labels, test_size=0.25, random_state=0)
-
+        
+        
     def change_to_keras_set(self) :
         #將資料轉為keras可以運作的
         lb = LabelBinarizer().fit(self.y_train)
         self.y_train = lb.transform(self.y_train)
         self.y_test = lb.transform(self.y_test)
         
+        self.x_test = np.concatenate((self.x_test,self.x_test,self.x_test),axis=-1)
+        self.x_train = np.concatenate((self.x_train,self.x_train,self.x_train),axis=-1)
+        #print(self.x_test)
+        
         #儲存model的label
         with open(self.model_labels_fileName, "wb") as f :
             pickle.dump(lb, f)
             
     def build_CNN_model(self) :
-        #使用keras建立CNN
-        model = Sequential()
         
-        #建立第一層卷積神經網路
-        model.add(Conv2D(20, (5,5), padding="same", input_shape=(20,20,1), activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
         
-        #建立第二層卷積神經網路
-        model.add(Conv2D(50, (5,5), padding="same", activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+        base_model = ResNet50(weights='imagenet', include_top=False)
+        x = base_model.output
+        x = GlobalAveragePooling2D()(x)
+        x = Dense(1024, activation='relu')(x)
+        x = Dropout(0.5)(x)
         
-        #建立隱藏層
-        model.add(Flatten())
-        model.add(Dense(500, activation="relu"))
+        predictions = Dense(32, activation='softmax')(x)
+        model = Model(inputs=base_model.input, outputs=predictions)
+        print(model.summary())
         
-        #建立output layer
-        model.add(Dense(32, activation="softmax"))
         
         #選擇訓練model的compile
         model.compile(loss = "categorical_crossentropy",optimizer = "adam", metrics = ["accuracy"])
         
         #開始訓練model並將訓練過程存到history
-        self.history = model.fit(self.x_train, self.y_train, validation_data=(self.x_test, self.y_test), batch_size=32, epochs=10, verbose=1)
+        #self.history = model.fit(self.x_train, self.y_train, validation_data=(self.x_test, self.y_test), batch_size=8, epochs=1, verbose=1)
+        self.history = model.fit(self.x_train, self.y_train,validation_data=(self.x_test, self.y_test), batch_size=16, epochs=10, verbose=1)
         
         #預測
         predictions = model.predict(self.x_test)
@@ -78,10 +82,8 @@ class train_Model :
         print("recall score : ",recall)
         print("f1 score : ",f1)
         
-        proba = model.predict_proba(self.x_test)
-        #print(proba)
-        loss = log_loss(test_label, proba)
-        print("log loss : ", loss)
+        loss = hamming_loss(test_label, pred_label)
+        print("hamming loss : ", loss)
         
         
         #儲存訓練好的model
@@ -93,5 +95,3 @@ class train_Model :
     
     def return_history(self) :
         return self.history
-
-

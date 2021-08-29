@@ -11,8 +11,11 @@ import class_setData
 from class_setData import setData
 from class_setData import change_Data
 
+#import class_trainModel
+#from class_trainModel import train_Model
+
 import class_trainModel
-from class_trainModel import train_Model
+from class_trainModel_new import train_Model
 
 import class_outputResult
 from class_outputResult import output_Result
