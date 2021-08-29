@@ -6,7 +6,6 @@ Created on Tue Aug 10 21:16:30 2021
 """
 
 
-#import class
 import class_setData
 from class_setData import setData
 from class_setData import change_Data
@@ -29,7 +28,6 @@ class main_function :
         #資料處理
         set_data = setData()
         set_data.data_set()
-        
         change_data = change_Data()
         change_data.input_image()
         self.data = change_data.return_data()
@@ -45,22 +43,19 @@ class main_function :
         train_model.build_CNN_model()
         self.history = train_model.return_history()
         self.model = train_model.return_model()
+        self.accuracy, self.recall, self.f1, self.loss = train_model.return_score()
         
         #run result
         self.result()
         
+        
     def result(self) :
         #output result
-        output_result = output_Result(self.model, self.history)
+        output_result = output_Result(self.model, self.history, self.accuracy, self.recall, self.f1, self.loss)
         output_result.save_model()
         output_result.save_csv()
         output_result.save_JSON()
+        output_result.save_scoreJSON()
 
-#main function
 run_main = main_function()
 run_main.begain()
-
-
-
-
-
