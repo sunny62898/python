@@ -7,6 +7,7 @@ Created on Tue Aug 10 22:45:12 2021
 
 import pickle
 import numpy as np
+from scipy import stats
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score,log_loss
 from sklearn.model_selection import train_test_split
@@ -73,6 +74,9 @@ class train_Model :
         pred_label = np.argmax(predictions, axis=1)
         test_label = np.argmax(self.y_test, axis=1)
         
+        test_value = t_test(test_label, pred_label)
+        test_value.p_value()
+        
         self.accuracy = accuracy_score(test_label, pred_label)
         self.recall = recall_score(test_label, pred_label,pos_label='positive',average='micro')
         self.f1 = f1_score(test_label, pred_label,pos_label='positive',average='micro')
@@ -88,5 +92,34 @@ class train_Model :
     
     def return_score(self) :
         return self.accuracy, self.recall, self.f1, self.loss
+
+class t_test :
+    def __init__(self, ans_label, pred_label) :
+        self.answer = ans_label
+        self.predict = pred_label
+        
+    def p_value(self) :
+        #sample size
+        N = len(self.answer)
+        
+        var_answer = self.answer.var(ddof=1)
+        var_predict = self.predict.var(ddof=1)
+        
+        print('var_answer : ', var_answer)
+        print('var_predict : ', var_predict)
+        
+        #std deviation
+        s = np.sqrt((var_answer+var_predict)/2)
+        
+        #統計量
+        t = (self.answer.mean() - self.predict.mean())/(s*np.sqrt(2/N))
+        
+        #自由度
+        df = 2*N - 2
+        
+        #計算p-value after comparison with the t
+        p = 1 - stats.t.cdf(t,df=df)
+        
+        print('test p value : ', stats.ttest_ind(self.answer, self.predict, equal_var=False))
 
 
