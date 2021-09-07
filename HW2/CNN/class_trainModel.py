@@ -9,9 +9,9 @@ import pickle
 import numpy as np
 from scipy import stats
 from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score,log_loss
+from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score,hamming_loss
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
+from keras.models import Model, Input
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 
 
@@ -37,22 +37,24 @@ class train_Model :
             
     def build_CNN_model(self) :
         #使用keras建立CNN
-        model = Sequential()
-        
+        input = Input(shape=(20,20,1))
+        x = input
         #建立第一層卷積神經網路
-        model.add(Conv2D(20, (5,5), padding="same", input_shape=(20,20,1), activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+        x = Conv2D(20, (5, 5), padding="same", activation="relu")(x)
+        x = MaxPooling2D(pool_size=(2,2), strides=(2,2))(x)
         
         #建立第二層卷積神經網路
-        model.add(Conv2D(50, (5,5), padding="same", activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+        x = Conv2D(50, (5,5), padding="same", activation="relu")(x)
+        x = MaxPooling2D(pool_size=(2,2), strides=(2,2))(x)
         
         #建立隱藏層
-        model.add(Flatten())
-        model.add(Dense(500, activation="relu"))
+        x = Flatten()(x)
+        x = Dense(500, activation="relu")(x)
         
         #建立output layer
-        model.add(Dense(32, activation="softmax"))
+        outputLayer = Dense(32, activation='softmax')(x)
+        
+        model = Model(inputs=input, outputs=outputLayer)
         
         #選擇訓練model的compile
         model.compile(loss = "categorical_crossentropy",optimizer = "adam", metrics = ["accuracy"])
@@ -81,8 +83,8 @@ class train_Model :
         self.recall = recall_score(test_label, pred_label,pos_label='positive',average='micro')
         self.f1 = f1_score(test_label, pred_label,pos_label='positive',average='micro')
         
-        proba = self.save_model.predict_proba(self.x_test)
-        self.loss = log_loss(test_label, proba)
+        self.loss = hamming_loss(test_label, pred_label)
+        print("hamming loss : ", self.loss)
         
     def return_model(self) :
         return self.save_model
