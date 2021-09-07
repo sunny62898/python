@@ -47,7 +47,6 @@ class train_Model :
             
     def build_RNN_model(self) :
         #使用keras建立RNN
-        model = Sequential()
         
         #建立第一層循環神經網路
         #model.add(SimpleRNN(batch_input_shape=(None, 20, 20), units= 50,unroll=True, batch_size=None))

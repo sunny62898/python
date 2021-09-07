@@ -9,9 +9,9 @@ import pickle
 import numpy as np
 from scipy import stats
 from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score, log_loss
+from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,recall_score, hamming_loss
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
+from keras.models import Model, Input
 from keras.layers import LSTM, Dense
 
 class train_Model :
@@ -39,17 +39,20 @@ class train_Model :
             
     def build_RNN_model(self) :
         #使用keras建立RNN
-        model = Sequential()
+        input = Input(shape=[20, 20])
         
         #建立第一層循環神經網路
-        model.add(LSTM(128, batch_input_shape=(None,20,20), unroll=True, activation="relu"))
+        lstm = LSTM(128, unroll=True, activation="relu")(input)
         
         #建立隱藏層
         #model.add(Dense(512, activation="sigmoid"))
         #model.add(Dense(100, activation="sigmoid"))
         
         #建立output layer
-        model.add(Dense(32, activation="softmax"))
+        outputLayer = Dense(32, activation="softmax")(lstm)
+        
+        model = Model(input, outputLayer)
+        
         model.summary()
         
         #選擇訓練model的compile
@@ -78,8 +81,8 @@ class train_Model :
         self.recall = recall_score(test_label, pred_label,pos_label='positive',average='micro')
         self.f1 = f1_score(test_label, pred_label,pos_label='positive',average='micro')
         
-        proba = self.save_model.predict_proba(self.x_test)
-        self.loss = log_loss(test_label, proba)
+        self.loss = hamming_loss(test_label, pred_label)
+        print("hamming loss : ", self.loss)
         
     def return_model(self) :
         return self.save_model
